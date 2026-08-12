@@ -24,8 +24,18 @@ const itemVariants = {
   },
 };
 
+import { useState, useEffect } from 'react';
+import { getPortfolioData } from '../data/portfolio';
+import type { PortfolioData } from '../data/portfolio';
+
+// Inside Hero component:
 export const Hero = () => {
   const { t } = useLanguage();
+  const [data, setData] = useState<PortfolioData>(getPortfolioData());
+
+  useEffect(() => {
+    setData(getPortfolioData());
+  }, []);
 
   const scrollTo = (id: string) => {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -76,7 +86,7 @@ export const Hero = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
           >
             <img
-              src="/character.png"
+              src={data.avatarUrl || '/character.png'}
               alt="Ilham Eka Saputra Avatar Character"
               className="hero__portrait-img"
             />
