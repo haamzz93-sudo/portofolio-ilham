@@ -1,6 +1,8 @@
-/* ── Framer-Style Intro Splash Screen ── */
+/* ============================================
+   CYBER SECURITY VERIFICATION SPLASH SCREEN
+   ============================================ */
 
-.splash-screen {
+.cyber-security-splash {
   position: fixed;
   inset: 0;
   width: 100vw;
@@ -10,91 +12,142 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  font-family: var(--font-heading);
   user-select: none;
 }
 
-.splash-ambient-glow {
+.cyber-ambient-glow {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 600px;
   height: 600px;
-  background: radial-gradient(circle, rgba(77, 168, 218, 0.25) 0%, rgba(77, 168, 218, 0.05) 50%, transparent 75%);
-  filter: blur(100px);
+  background: radial-gradient(circle, rgba(77, 168, 218, 0.18) 0%, rgba(77, 168, 218, 0.04) 55%, transparent 75%);
+  filter: blur(80px);
   pointer-events: none;
 }
 
-.splash-content {
+.cyber-security-card {
   position: relative;
   z-index: 2;
+  width: min(90%, 460px);
+  padding: 2.5rem 2rem;
+  background: rgba(15, 17, 21, 0.85);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border: 1px solid rgba(77, 168, 218, 0.3);
+  border-radius: var(--radius-2xl);
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.7),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15),
+    0 0 35px rgba(77, 168, 218, 0.15);
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
   text-align: center;
 }
 
-.splash-logo {
+/* Spinner & Shield Box */
+.cyber-shield-wrapper {
+  position: relative;
+  width: 90px;
+  height: 90px;
   display: flex;
-  align-items: baseline;
-  gap: 4px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
 }
 
-.splash-logo-text {
-  font-family: var(--font-heading);
-  font-size: clamp(3.5rem, 8vw, 6rem);
-  font-weight: 800;
-  color: #FFFFFF;
-  letter-spacing: -0.03em;
-  text-shadow: 0 0 30px rgba(77, 168, 218, 0.4);
-}
-
-.splash-logo-dot {
-  width: 14px;
-  height: 14px;
-  background: var(--accent);
+.cyber-spinner-ring {
+  position: absolute;
+  inset: 0;
   border-radius: 50%;
-  box-shadow: 0 0 20px var(--accent);
+  border: 3px solid transparent;
+  border-top-color: var(--accent);
+  border-right-color: rgba(77, 168, 218, 0.4);
 }
 
-.splash-subtitle {
-  font-family: var(--font-body);
-  font-size: var(--text-xs);
-  font-weight: 700;
-  letter-spacing: 0.25em;
+.cyber-spinner-ring-inner {
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-bottom-color: #6BC0F0;
+  border-left-color: rgba(107, 192, 240, 0.4);
+}
+
+.cyber-shield-icon-box {
+  position: relative;
+  z-index: 3;
+  width: 60px;
+  height: 60px;
+  background: rgba(77, 168, 218, 0.12);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 20px rgba(77, 168, 218, 0.3);
+}
+
+/* Heading & Badge */
+.cyber-security-heading h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #FFFFFF;
+  margin-bottom: 0.5rem;
+}
+
+.cyber-badge-pulse {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background: rgba(77, 168, 218, 0.1);
+  border: 1px solid rgba(77, 168, 218, 0.3);
+  border-radius: var(--radius-full);
   color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
-.splash-progress-wrapper {
-  margin-top: 1.5rem;
-  width: 240px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.5rem;
+/* Status Text */
+.cyber-security-status {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  margin-block: 1.25rem 1rem;
+  min-height: 1.5rem;
+  font-weight: 500;
 }
 
-.splash-progress-track {
+/* Progress Bar */
+.cyber-progress-container {
   width: 100%;
-  height: 4px;
+}
+
+.cyber-progress-track {
+  width: 100%;
+  height: 6px;
   background: rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
 
-.splash-progress-fill {
+.cyber-progress-fill {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), #6BC0F0);
+  background: linear-gradient(90deg, #4DA8DA, #6BC0F0, #10B981);
   border-radius: var(--radius-full);
-  box-shadow: 0 0 12px var(--accent);
-  transition: width 0.15s ease-out;
+  transition: width 0.4s ease;
+  box-shadow: 0 0 12px rgba(77, 168, 218, 0.6);
 }
 
-.splash-progress-text {
-  font-family: monospace;
-  font-size: var(--text-xs);
+.cyber-progress-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
 }
