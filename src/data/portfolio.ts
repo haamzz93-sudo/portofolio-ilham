@@ -129,6 +129,8 @@ const DEFAULT_DATA: PortfolioData = {
   ],
 };
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://portofolio-backend-silk.vercel.app';
+
 export function getPortfolioData(): PortfolioData {
   try {
     const saved = localStorage.getItem('portfolio_data');
@@ -157,9 +159,36 @@ export function getPortfolioData(): PortfolioData {
   return DEFAULT_DATA;
 }
 
+export async function fetchPortfolioData(): Promise<PortfolioData> {
+  try {
+    const res = await fetch(`${API_BASE_URL}/api/portfolio`);
+    if (res.ok) {
+      const cloudData = await res.json();
+      const config = cloudData.config || cloudData;
+      const merged: PortfolioData = {
+        ...DEFAULT_DATA,
+        ...config,
+        projects: cloudData.projects?.length ? cloudData.projects : (config.projects?.length ? config.projects : DEFAULT_DATA.projects),
+        skills: cloudData.skills?.length ? cloudData.skills : (config.skills?.length ? config.skills : DEFAULT_DATA.skills),
+        experiences: cloudData.experiences?.length ? cloudData.experiences : (config.experiences?.length ? config.experiences : DEFAULT_DATA.experiences),
+      };
+      localStorage.setItem('portfolio_data', JSON.stringify(merged));
+      return merged;
+    }
+  } catch (e) {
+    console.error('Error fetching cloud portfolio data:', e);
+  }
+  return getPortfolioData();
+}
+
 export function savePortfolioData(data: PortfolioData): void {
   try {
     localStorage.setItem('portfolio_data', JSON.stringify(data));
+    fetch(`${API_BASE_URL}/api/portfolio`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }).catch((err) => console.error('Cloud save failed:', err));
   } catch (e) {
     console.error('Error saving portfolio data:', e);
   }

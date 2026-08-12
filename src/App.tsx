@@ -1,12 +1,17 @@
-import { Suspense, lazy } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import { AdminProvider } from './admin/AdminProvider';
+import { fetchPortfolioData } from './data/portfolio';
 import './App.css';
 
 const AdminDashboard = lazy(() => import('./pages/AdminDashboard').then(m => ({ default: m.AdminDashboard })));
 
 const App = () => {
+  useEffect(() => {
+    fetchPortfolioData();
+  }, []);
+
   return (
     <div className="app">
       <Suspense fallback={
