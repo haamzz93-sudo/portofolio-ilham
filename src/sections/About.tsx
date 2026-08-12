@@ -1,18 +1,20 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Download, MapPin, GraduationCap } from 'lucide-react';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { IdCard3D } from '../components/ui/IdCard3D';
 import { useLanguage } from '../context/LanguageContext';
+import { getPortfolioData } from '../data/portfolio';
+import type { PortfolioData } from '../data/portfolio';
 import './About.css';
 
 export const About = () => {
   const { t } = useLanguage();
+  const [data, setData] = useState<PortfolioData>(getPortfolioData());
 
-  const stats = [
-    { label: t.about.stats.experience, value: '3.68' },
-    { label: t.about.stats.projects, value: '10+' },
-    { label: t.about.stats.university, value: 'UNS' },
-  ];
+  useEffect(() => {
+    setData(getPortfolioData());
+  }, []);
 
   return (
     <section id="about" className="section section--alt">
@@ -28,7 +30,7 @@ export const About = () => {
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.6 }}
           >
-            <IdCard3D imageSrc="/character.png" />
+            <IdCard3D imageSrc={data.idPhotoUrl || '/character.png'} />
           </motion.div>
 
           {/* About Text Content */}
@@ -39,7 +41,7 @@ export const About = () => {
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <p className="about__bio">{t.about.bio}</p>
+            <p className="about__bio">{data.bio || t.about.bio}</p>
 
             <div className="about__info">
               <div className="about__info-item">
@@ -52,28 +54,18 @@ export const About = () => {
               </div>
             </div>
 
-            <a href="/cv-ilham-eka-saputra.txt" download="CV_Ilham_Eka_Saputra.txt" className="btn btn--glass">
+            <a
+              href={data.cvUrl || '/cv-ilham-eka-saputra.txt'}
+              target="_blank"
+              rel="noopener noreferrer"
+              download="CV_Ilham_Eka_Saputra.pdf"
+              className="btn btn--glass"
+            >
               <Download size={18} />
               {t.about.downloadCv}
             </a>
           </motion.div>
         </div>
-
-        {/* Stats Section */}
-        <motion.div
-          className="about__stats"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-        >
-          {stats.map((stat, i) => (
-            <div key={i} className="about__stat-card glass">
-              <div className="about__stat-value">{stat.value}</div>
-              <div className="about__stat-label">{stat.label}</div>
-            </div>
-          ))}
-        </motion.div>
       </div>
     </section>
   );

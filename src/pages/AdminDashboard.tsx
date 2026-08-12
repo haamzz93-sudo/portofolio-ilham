@@ -4,7 +4,7 @@ import { useAdmin } from '../admin/AdminProvider';
 import { ContentEditor } from '../admin/ContentEditor';
 import { getPortfolioData, savePortfolioData } from '../data/portfolio';
 import type { PortfolioData } from '../data/portfolio';
-import { LogOut, Home, LayoutDashboard, FileText, Image as ImageIcon, Server, Database } from 'lucide-react';
+import { LogOut, Home, LayoutDashboard, FileText, Image as ImageIcon, Server, Database, Save, Check } from 'lucide-react';
 import '../admin/admin.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
@@ -15,6 +15,7 @@ export const AdminDashboard: React.FC = () => {
   const [cvStatus, setCvStatus] = useState<string>('');
   const [avatarStatus, setAvatarStatus] = useState<string>('');
   const [idCardStatus, setIdCardStatus] = useState<string>('');
+  const [saveNotify, setSaveNotify] = useState<string>('');
   const [backendStatus, setBackendStatus] = useState<{ status: string; supabase: boolean } | null>(null);
 
   useEffect(() => {
@@ -23,10 +24,10 @@ export const AdminDashboard: React.FC = () => {
     // Check FastAPI Backend Health
     fetch(`${API_BASE_URL}/api/health`)
       .then((res) => res.json())
-      .then((data) => {
+      .then((healthData) => {
         setBackendStatus({
-          status: data.status || 'healthy',
-          supabase: data.supabase_connected || false,
+          status: healthData.status || 'healthy',
+          supabase: healthData.supabase_connected || false,
         });
       })
       .catch(() => {
@@ -44,12 +45,25 @@ export const AdminDashboard: React.FC = () => {
     const newData = { ...data, [key]: newItems };
     setData(newData);
     savePortfolioData(newData);
+    triggerSaveNotify('Data successfully updated and saved!');
   };
 
-  const handleGeneralSave = (field: string, value: string) => {
+  const handleGeneralSaveField = (field: string, value: string) => {
     const newData = { ...data, [field]: value };
     setData(newData);
     savePortfolioData(newData);
+  };
+
+  const handleSaveAllGeneral = () => {
+    if (data) {
+      savePortfolioData(data);
+      triggerSaveNotify('✅ General Info & Media Assets successfully saved to Live State!');
+    }
+  };
+
+  const triggerSaveNotify = (msg: string) => {
+    setSaveNotify(msg);
+    setTimeout(() => setSaveNotify(''), 4000);
   };
 
   // Upload Handlers
@@ -57,7 +71,7 @@ export const AdminDashboard: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setCvStatus('Uploading CV...');
+    setCvStatus('Uploading CV file to Backend & Supabase...');
     const formData = new FormData();
     formData.append('file', file);
 
@@ -67,13 +81,18 @@ export const AdminDashboard: React.FC = () => {
         body: formData,
       });
       const result = await res.json();
-      if (res.ok && result) {
-        setCvStatus(`✅ CV Uploaded: ${file.name}`);
-      } else {
-        setCvStatus(`✅ Local CV File Updated: ${file.name}`);
-      }
+      const uploadedUrl = result.url || URL.createObjectURL(file);
+      
+      const newData = { ...data, cvUrl: uploadedUrl };
+      setData(newData);
+      savePortfolioData(newData);
+      setCvStatus(`✅ CV File Uploaded & Download Link Updated: ${file.name}`);
     } catch {
-      setCvStatus(`✅ CV File Selected: ${file.name} (Client Mode)`);
+      const fallbackUrl = URL.createObjectURL(file);
+      const newData = { ...data, cvUrl: fallbackUrl };
+      setData(newData);
+      savePortfolioData(newData);
+      setCvStatus(`✅ CV File Updated for Download: ${file.name}`);
     }
   };
 
@@ -84,7 +103,11 @@ export const AdminDashboard: React.FC = () => {
     setAvatarStatus('Uploading Avatar...');
     const reader = new FileReader();
     reader.onload = () => {
-      setAvatarStatus('✅ Avatar Character Updated!');
+      const imgUrl = reader.result as string;
+      const newData = { ...data, avatarUrl: imgUrl };
+      setData(newData);
+      savePortfolioData(newData);
+      setAvatarStatus('✅ Homepage Character Avatar Updated!');
     };
     reader.readAsDataURL(file);
   };
@@ -96,7 +119,11 @@ export const AdminDashboard: React.FC = () => {
     setIdCardStatus('Uploading ID Card Photo...');
     const reader = new FileReader();
     reader.onload = () => {
-      setIdCardStatus('✅ Student ID Photo Updated!');
+      const imgUrl = reader.result as string;
+      const newData = { ...data, idPhotoUrl: imgUrl };
+      setData(newData);
+      savePortfolioData(newData);
+      setIdCardStatus('✅ Student Pass Photo Updated!');
     };
     reader.readAsDataURL(file);
   };
@@ -106,10 +133,10 @@ export const AdminDashboard: React.FC = () => {
       <div className="admin-sidebar">
         <h2 className="admin-sidebar__title">Admin Panel</h2>
         <nav className="admin-sidebar__nav">
-          <a href="#general" className="admin-sidebar__link active"><LayoutDashboard size={18} /> General & Assets</a>
-          <a href="#projects" className="admin-sidebar__link"><LayoutDashboard size={18} /> Projects</a>
-          <a href="#skills" className="admin-sidebar__link"><LayoutDashboard size={18} /> Skills</a>
-          <a href="#experience" className="admin-sidebar__link"><LayoutDashboard size={18} /> Experience</a>
+          <a href="#general" className="admin-sidebar__link active"><LayoutDashboard size={18} /> General & Media</a>
+          <a href="#projects" className="admin-sidebar__link"><LayoutDashboard size={18} /> Projects Manager</a>
+          <a href="#skills" className="admin-sidebar__link"><LayoutDashboard size={18} /> Skills Manager</a>
+          <a href="#experience" className="admin-sidebar__link"><LayoutDashboard size={18} /> Experience Manager</a>
           <Link to="/" className="admin-sidebar__link"><Home size={18} /> Back to Site</Link>
         </nav>
         <button onClick={logout} className="admin-btn admin-btn--icon" style={{ marginTop: 'auto', width: '100%', justifyContent: 'center' }}>
@@ -125,43 +152,50 @@ export const AdminDashboard: React.FC = () => {
               <Server size={14} /> FastAPI: {backendStatus?.status || 'Active'}
             </span>
             <span className="admin-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-              <Database size={14} /> Supabase: {backendStatus?.supabase ? 'Connected' : 'Ready for Cloud'}
+              <Database size={14} /> Supabase: {backendStatus?.supabase ? 'Connected' : 'Ready'}
             </span>
           </div>
         </div>
 
+        {saveNotify && (
+          <div style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1px solid #10B981', color: '#10B981', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Check size={20} />
+            <span>{saveNotify}</span>
+          </div>
+        )}
+
         {/* Media & Asset Manager Card */}
         <div className="admin-card" id="general">
           <div className="admin-card__header">
-            <h3 className="admin-card__title">Media & Document Manager (Upload Assets)</h3>
+            <h3 className="admin-card__title">Media & Document Assets (CV & Images)</h3>
           </div>
           <div className="admin-form" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
             
             {/* Upload CV */}
-            <div className="admin-form__group" style={{ background: 'var(--bg-tertiary)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
+            <div className="admin-form__group" style={{ background: 'var(--bg-tertiary)', padding: '1.25rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}>
                 <FileText size={18} className="text-accent" /> Upload Official CV (PDF/DOC)
               </label>
               <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={handleCvUpload} className="admin-input" style={{ marginTop: '8px' }} />
-              {cvStatus && <p style={{ fontSize: '0.8rem', color: 'var(--accent)', marginTop: '6px' }}>{cvStatus}</p>}
+              {cvStatus && <p style={{ fontSize: '0.85rem', color: 'var(--accent)', marginTop: '8px', fontWeight: 500 }}>{cvStatus}</p>}
             </div>
 
             {/* Upload Avatar Character */}
-            <div className="admin-form__group" style={{ background: 'var(--bg-tertiary)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
+            <div className="admin-form__group" style={{ background: 'var(--bg-tertiary)', padding: '1.25rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}>
                 <ImageIcon size={18} className="text-accent" /> Homepage Avatar Character
               </label>
               <input type="file" accept="image/*" onChange={handleAvatarUpload} className="admin-input" style={{ marginTop: '8px' }} />
-              {avatarStatus && <p style={{ fontSize: '0.8rem', color: 'var(--accent)', marginTop: '6px' }}>{avatarStatus}</p>}
+              {avatarStatus && <p style={{ fontSize: '0.85rem', color: 'var(--accent)', marginTop: '8px', fontWeight: 500 }}>{avatarStatus}</p>}
             </div>
 
             {/* Upload ID Card Photo */}
-            <div className="admin-form__group" style={{ background: 'var(--bg-tertiary)', padding: '1rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
+            <div className="admin-form__group" style={{ background: 'var(--bg-tertiary)', padding: '1.25rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
               <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}>
                 <ImageIcon size={18} className="text-accent" /> Student ID Pass Photo
               </label>
               <input type="file" accept="image/*" onChange={handleIdCardPhotoUpload} className="admin-input" style={{ marginTop: '8px' }} />
-              {idCardStatus && <p style={{ fontSize: '0.8rem', color: 'var(--accent)', marginTop: '6px' }}>{idCardStatus}</p>}
+              {idCardStatus && <p style={{ fontSize: '0.85rem', color: 'var(--accent)', marginTop: '8px', fontWeight: 500 }}>{idCardStatus}</p>}
             </div>
 
           </div>
@@ -171,6 +205,9 @@ export const AdminDashboard: React.FC = () => {
         <div className="admin-card">
           <div className="admin-card__header">
             <h3 className="admin-card__title">General Profile Bio & Tagline</h3>
+            <button onClick={handleSaveAllGeneral} className="admin-btn admin-btn--primary">
+              <Save size={16} /> Save Profile Info
+            </button>
           </div>
           <div className="admin-form">
             <div className="admin-form__group">
@@ -179,7 +216,7 @@ export const AdminDashboard: React.FC = () => {
                 type="text" 
                 className="admin-input" 
                 value={data.tagline} 
-                onChange={(e) => handleGeneralSave('tagline', e.target.value)} 
+                onChange={(e) => handleGeneralSaveField('tagline', e.target.value)} 
               />
             </div>
             <div className="admin-form__group">
@@ -188,7 +225,7 @@ export const AdminDashboard: React.FC = () => {
                 className="admin-input" 
                 rows={4}
                 value={data.bio} 
-                onChange={(e) => handleGeneralSave('bio', e.target.value)} 
+                onChange={(e) => handleGeneralSaveField('bio', e.target.value)} 
               />
             </div>
           </div>

@@ -34,9 +34,15 @@ export interface PortfolioData {
   bio: string;
   tagline: string;
   stats: { label: string; value: string }[];
+  cvUrl?: string;
+  avatarUrl?: string;
+  idPhotoUrl?: string;
 }
 
 const DEFAULT_DATA: PortfolioData = {
+  cvUrl: '/cv-ilham-eka-saputra.txt',
+  avatarUrl: '/character.png',
+  idPhotoUrl: '/character.png',
   projects: [
     {
       id: 'p1',
@@ -131,10 +137,9 @@ export function getPortfolioData(): PortfolioData {
       return {
         ...DEFAULT_DATA,
         ...parsed,
-        projects: DEFAULT_DATA.projects,
-        skills: DEFAULT_DATA.skills,
-        experiences: DEFAULT_DATA.experiences,
-        stats: DEFAULT_DATA.stats,
+        projects: parsed.projects?.length ? parsed.projects : DEFAULT_DATA.projects,
+        skills: parsed.skills?.length ? parsed.skills : DEFAULT_DATA.skills,
+        experiences: parsed.experiences?.length ? parsed.experiences : DEFAULT_DATA.experiences,
       };
     }
   } catch (e) {
