@@ -30,7 +30,7 @@ export const About = () => {
             viewport={{ once: true, margin: '-100px' }}
             transition={{ duration: 0.6 }}
           >
-            <IdCard3D imageSrc={data.idPhotoUrl || '/character.png'} />
+            <IdCard3D imageSrc={data.idPhotoUrl || '/id-photo.png'} />
           </motion.div>
 
           {/* About Text Content */}

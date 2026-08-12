@@ -7,7 +7,7 @@ interface IdCard3DProps {
 }
 
 export const IdCard3D: React.FC<IdCard3DProps> = ({
-  imageSrc = '/character.png',
+  imageSrc = '/id-photo.png',
 }) => {
   const [isFlipped, setIsFlipped] = useState(false);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });

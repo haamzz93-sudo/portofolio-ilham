@@ -108,6 +108,27 @@
   );
   pointer-events: none;
 }
+ /* Responsive Adjustments for Mobile & Tablet */
+@media (max-width: 768px) {
+  .id-card-3d-scene {
+    padding-top: 2rem;
+    max-width: 290px;
+  }
+
+  .id-card-lanyard-assembly {
+    top: -50px;
+  }
+
+  .id-card-ribbon {
+    height: 85px;
+    width: 18px;
+  }
+
+  .id-card-wrap {
+    width: 290px;
+    height: 420px;
+  }
+}
 
 /* Lanyard slot hole */
 .id-card-slot {
