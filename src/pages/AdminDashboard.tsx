@@ -7,6 +7,8 @@ import type { PortfolioData } from '../data/portfolio';
 import { LogOut, Home, LayoutDashboard, Upload, FileText, Image as ImageIcon, CheckCircle, Server, Database } from 'lucide-react';
 import '../admin/admin.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
+
 export const AdminDashboard: React.FC = () => {
   const { isAuthenticated, logout } = useAdmin();
   const [data, setData] = useState<PortfolioData | null>(null);
@@ -19,7 +21,7 @@ export const AdminDashboard: React.FC = () => {
     setData(getPortfolioData());
 
     // Check FastAPI Backend Health
-    fetch('/api/health')
+    fetch(`${API_BASE_URL}/api/health`)
       .then((res) => res.json())
       .then((data) => {
         setBackendStatus({
@@ -60,7 +62,7 @@ export const AdminDashboard: React.FC = () => {
     formData.append('file', file);
 
     try {
-      const res = await fetch('/api/upload/cv', {
+      const res = await fetch(`${API_BASE_URL}/api/upload/cv`, {
         method: 'POST',
         body: formData,
       });

@@ -20,8 +20,8 @@ app.add_middleware(
 )
 
 # Supabase Client Setup (from Environment Variables)
-SUPABASE_URL = os.getenv("SUPABASE_URL", "https://your-supabase-project.supabase.co")
-SUPABASE_KEY = os.getenv("SUPABASE_KEY", "your-supabase-anon-key")
+SUPABASE_URL = os.getenv("SUPABASE_URL", "https://bypxtnuvdldhwsprhvbq.supabase.co")
+SUPABASE_KEY = os.getenv("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ5cHh0bnV2ZGxkaHdzcHJodmJxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY1Mzk5ODQsImV4cCI6MjEwMjExNTk4NH0.WphY3WCHLrbAUDe-7JmKTdJmZLX-PiH4VriZ8Bp04vM")
 
 supabase_client = None
 try:
