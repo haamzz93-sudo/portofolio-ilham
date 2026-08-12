@@ -208,13 +208,13 @@ export const AdminDashboard: React.FC = () => {
                 <h4 style={{ fontSize: '0.95rem', color: 'var(--accent)', margin: 0 }}>📄 Official CV Document</h4>
                 <span className="admin-badge" style={{ fontSize: '0.7rem' }}>{data.cvUrl ? 'Cloud Active' : 'Default TXT'}</span>
               </div>
-              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem', wordBreak: 'break-all' }}>
-                {data.cvUrl ? data.cvUrl : 'Using default CV fallback file.'}
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                {data.cvUrl ? (data.cvUrl.startsWith('data:') ? '📄 Official PDF CV Uploaded & Active' : data.cvUrl) : 'Using default CV fallback file.'}
               </p>
               <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                 {data.cvUrl && (
-                  <a href={data.cvUrl} target="_blank" rel="noreferrer" className="admin-btn admin-btn--outline" style={{ fontSize: '0.75rem', padding: '4px 10px' }}>
-                    <FileText size={14} /> Test Download
+                  <a href={data.cvUrl} download="CV_Ilham_Eka_Saputra_V3924005.pdf" className="admin-btn admin-btn--outline" style={{ fontSize: '0.75rem', padding: '4px 10px' }}>
+                    <FileText size={14} /> Test Download PDF
                   </a>
                 )}
                 <label className="admin-btn admin-btn--primary" style={{ fontSize: '0.75rem', padding: '4px 10px', cursor: 'pointer' }}>
