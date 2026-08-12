@@ -64,8 +64,8 @@ export const About = () => {
             {/* Quick Stats Highlights */}
             <div className="about__stats-row" style={{ display: 'flex', gap: '1.25rem', margin: '0.5rem 0 1rem 0' }}>
               <div className="stat-card" style={{ padding: '0.75rem 1.25rem', background: 'rgba(77,168,218,0.08)', border: '1px solid rgba(77,168,218,0.25)', borderRadius: '10px' }}>
-                <span style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--accent)', display: 'block', lineHeight: 1.2 }}>3.68</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: '600' }}>IPK / GPA (UNS Madiun)</span>
+                <span style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--accent)', display: 'block', lineHeight: 1.2 }}>Sem 5</span>
+                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: '600' }}>Active Student @ UNS</span>
               </div>
               <div className="stat-card" style={{ padding: '0.75rem 1.25rem', background: 'rgba(77,168,218,0.08)', border: '1px solid rgba(77,168,218,0.25)', borderRadius: '10px' }}>
                 <span style={{ fontSize: '1.35rem', fontWeight: '800', color: 'var(--accent)', display: 'block', lineHeight: 1.2 }}>3+</span>
