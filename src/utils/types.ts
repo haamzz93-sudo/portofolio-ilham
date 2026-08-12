@@ -1,5 +1,3 @@
-import type { PortfolioData } from './portfolio';
-
 export interface Project {
   id: string;
   title: string;

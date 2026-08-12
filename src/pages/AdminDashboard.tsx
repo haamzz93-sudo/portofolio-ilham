@@ -4,7 +4,7 @@ import { useAdmin } from '../admin/AdminProvider';
 import { ContentEditor } from '../admin/ContentEditor';
 import { getPortfolioData, savePortfolioData } from '../data/portfolio';
 import type { PortfolioData } from '../data/portfolio';
-import { LogOut, Home, LayoutDashboard, Upload, FileText, Image as ImageIcon, CheckCircle, Server, Database } from 'lucide-react';
+import { LogOut, Home, LayoutDashboard, FileText, Image as ImageIcon, Server, Database } from 'lucide-react';
 import '../admin/admin.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
@@ -67,7 +67,7 @@ export const AdminDashboard: React.FC = () => {
         body: formData,
       });
       const result = await res.json();
-      if (res.ok) {
+      if (res.ok && result) {
         setCvStatus(`✅ CV Uploaded: ${file.name}`);
       } else {
         setCvStatus(`✅ Local CV File Updated: ${file.name}`);

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Mail, ExternalLink, Code2, Send, CheckCircle, Phone, MessageCircle } from 'lucide-react';
+import { Mail, ExternalLink, Code2, Send, CheckCircle, MessageCircle } from 'lucide-react';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { SOCIAL_LINKS, PERSONAL_INFO } from '../utils/constants';
 import { useLanguage } from '../context/LanguageContext';
