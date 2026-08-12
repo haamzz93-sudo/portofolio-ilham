@@ -62,10 +62,10 @@ export const About = () => {
             </div>
 
             <a
-              href={data.cvUrl || '/cv-ilham-eka-saputra.txt'}
+              href={data.cvUrl || '/CV_Ilham_Eka_Saputra_V3924005.pdf'}
               target="_blank"
               rel="noopener noreferrer"
-              download="CV_Ilham_Eka_Saputra.pdf"
+              download="CV_Ilham_Eka_Saputra_V3924005.pdf"
               className="btn btn--glass"
             >
               <Download size={18} />

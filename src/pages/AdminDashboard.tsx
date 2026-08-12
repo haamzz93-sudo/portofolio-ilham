@@ -52,7 +52,7 @@ export const AdminDashboard: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setCvStatus('Uploading CV file to Backend & Supabase...');
+    setCvStatus('Uploading CV document to Supabase Cloud...');
     const formData = new FormData();
     formData.append('file', file);
 
@@ -66,18 +66,23 @@ export const AdminDashboard: React.FC = () => {
         const newData = { ...data, cvUrl: result.url };
         setData(newData);
         savePortfolioData(newData);
-        setCvStatus(`✅ CV Uploaded & Synced to Cloud: ${file.name}`);
+        setCvStatus(`✅ CV PDF Uploaded & Synced to Cloud: ${file.name}`);
         return;
       }
     } catch {
       // Fallback
     }
 
-    const fallbackUrl = `/cv-ilham-eka-saputra.txt`;
-    const newData = { ...data, cvUrl: fallbackUrl };
-    setData(newData);
-    savePortfolioData(newData);
-    setCvStatus(`✅ CV File Local Update: ${file.name}`);
+    // Read exact PDF as Base64 Data URL so browser downloads real PDF
+    const reader = new FileReader();
+    reader.onload = () => {
+      const pdfDataUrl = reader.result as string;
+      const newData = { ...data, cvUrl: pdfDataUrl };
+      setData(newData);
+      savePortfolioData(newData);
+      setCvStatus(`✅ PDF CV File Saved & Ready for Download: ${file.name}`);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
