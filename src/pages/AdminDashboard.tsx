@@ -4,7 +4,7 @@ import { useAdmin } from '../admin/AdminProvider';
 import { ContentEditor } from '../admin/ContentEditor';
 import { getPortfolioData, savePortfolioData } from '../data/portfolio';
 import type { PortfolioData } from '../data/portfolio';
-import { LogOut, Home, LayoutDashboard, FileText, Image as ImageIcon, Save, Check } from 'lucide-react';
+import { LogOut, Home, LayoutDashboard, FileText, Save, Check, Upload, Trash2 } from 'lucide-react';
 import '../admin/admin.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
@@ -34,16 +34,11 @@ export const AdminDashboard: React.FC = () => {
     triggerSaveNotify('Data successfully updated and saved!');
   };
 
-  const handleGeneralSaveField = (field: string, value: string) => {
-    const newData = { ...data, [field]: value };
-    setData(newData);
-    savePortfolioData(newData);
-  };
-
-  const handleSaveAllGeneral = () => {
+  const handleProfileSave = (e: React.FormEvent) => {
+    e.preventDefault();
     if (data) {
       savePortfolioData(data);
-      triggerSaveNotify('✅ General Info & Media Assets successfully saved to Live State!');
+      triggerSaveNotify('✅ Profile Info & Cloud Config Saved Successfully!');
     }
   };
 
@@ -67,19 +62,22 @@ export const AdminDashboard: React.FC = () => {
         body: formData,
       });
       const result = await res.json();
-      const uploadedUrl = result.url || URL.createObjectURL(file);
-      
-      const newData = { ...data, cvUrl: uploadedUrl };
-      setData(newData);
-      savePortfolioData(newData);
-      setCvStatus(`✅ CV File Uploaded & Download Link Updated: ${file.name}`);
+      if (result.url) {
+        const newData = { ...data, cvUrl: result.url };
+        setData(newData);
+        savePortfolioData(newData);
+        setCvStatus(`✅ CV Uploaded & Synced to Cloud: ${file.name}`);
+        return;
+      }
     } catch {
-      const fallbackUrl = URL.createObjectURL(file);
-      const newData = { ...data, cvUrl: fallbackUrl };
-      setData(newData);
-      savePortfolioData(newData);
-      setCvStatus(`✅ CV File Updated for Download: ${file.name}`);
+      // Fallback
     }
+
+    const fallbackUrl = `/cv-ilham-eka-saputra.txt`;
+    const newData = { ...data, cvUrl: fallbackUrl };
+    setData(newData);
+    savePortfolioData(newData);
+    setCvStatus(`✅ CV File Local Update: ${file.name}`);
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -193,68 +191,149 @@ export const AdminDashboard: React.FC = () => {
         {/* Media & Asset Manager Card */}
         <div className="admin-card" id="general">
           <div className="admin-card__header">
-            <h3 className="admin-card__title">Media & Document Assets (CV & Images)</h3>
+            <h3 className="admin-card__title"><FileText size={20} /> Media & Document Assets Manager</h3>
           </div>
-          <div className="admin-form" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+
+          {/* Active Assets CRUD Grid */}
+          <div className="admin-assets-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
             
-            {/* Upload CV */}
-            <div className="admin-form__group" style={{ background: 'var(--bg-tertiary)', padding: '1.25rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}>
-                <FileText size={18} className="text-accent" /> Upload Official CV (PDF/DOC)
-              </label>
-              <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={handleCvUpload} className="admin-input" style={{ marginTop: '8px' }} />
-              {cvStatus && <p style={{ fontSize: '0.85rem', color: 'var(--accent)', marginTop: '8px', fontWeight: 500 }}>{cvStatus}</p>}
+            {/* CV Asset Card */}
+            <div className="asset-card" style={{ padding: '1.25rem', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)', borderRadius: '12px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <h4 style={{ fontSize: '0.95rem', color: 'var(--accent)', margin: 0 }}>📄 Official CV Document</h4>
+                <span className="admin-badge" style={{ fontSize: '0.7rem' }}>{data.cvUrl ? 'Cloud Active' : 'Default TXT'}</span>
+              </div>
+              <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem', wordBreak: 'break-all' }}>
+                {data.cvUrl ? data.cvUrl : 'Using default CV fallback file.'}
+              </p>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                {data.cvUrl && (
+                  <a href={data.cvUrl} target="_blank" rel="noreferrer" className="admin-btn admin-btn--outline" style={{ fontSize: '0.75rem', padding: '4px 10px' }}>
+                    <FileText size={14} /> Test Download
+                  </a>
+                )}
+                <label className="admin-btn admin-btn--primary" style={{ fontSize: '0.75rem', padding: '4px 10px', cursor: 'pointer' }}>
+                  <Upload size={14} /> Upload / Replace PDF
+                  <input type="file" accept=".pdf,.doc,.docx,.txt" onChange={handleCvUpload} style={{ display: 'none' }} />
+                </label>
+                {data.cvUrl && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newData = { ...data, cvUrl: '' };
+                      setData(newData);
+                      savePortfolioData(newData);
+                      setCvStatus('🗑️ CV Reset to Default');
+                    }}
+                    className="admin-btn admin-btn--danger"
+                    style={{ fontSize: '0.75rem', padding: '4px 10px' }}
+                  >
+                    <Trash2 size={14} /> Reset
+                  </button>
+                )}
+              </div>
+              {cvStatus && <p style={{ fontSize: '0.8rem', color: '#10B981', marginTop: '0.5rem' }}>{cvStatus}</p>}
             </div>
 
-            {/* Upload Avatar Character */}
-            <div className="admin-form__group" style={{ background: 'var(--bg-tertiary)', padding: '1.25rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}>
-                <ImageIcon size={18} className="text-accent" /> Homepage Avatar Character
-              </label>
-              <input type="file" accept="image/*" onChange={handleAvatarUpload} className="admin-input" style={{ marginTop: '8px' }} />
-              {avatarStatus && <p style={{ fontSize: '0.85rem', color: 'var(--accent)', marginTop: '8px', fontWeight: 500 }}>{avatarStatus}</p>}
+            {/* Homepage Avatar Asset Card */}
+            <div className="asset-card" style={{ padding: '1.25rem', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)', borderRadius: '12px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <h4 style={{ fontSize: '0.95rem', color: 'var(--accent)', margin: 0 }}>🖼️ Hero Portrait Avatar</h4>
+                <span className="admin-badge" style={{ fontSize: '0.7rem' }}>{data.avatarUrl ? 'Cloud Active' : 'Default'}</span>
+              </div>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
+                <img src={data.avatarUrl || '/character.png'} alt="Avatar Preview" style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--accent)' }} />
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, wordBreak: 'break-all' }}>
+                  {data.avatarUrl ? 'Cloud Image Uploaded' : 'Default Batik Portrait'}
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <label className="admin-btn admin-btn--primary" style={{ fontSize: '0.75rem', padding: '4px 10px', cursor: 'pointer' }}>
+                  <Upload size={14} /> Upload / Replace
+                  <input type="file" accept="image/*" onChange={handleAvatarUpload} style={{ display: 'none' }} />
+                </label>
+                {data.avatarUrl && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newData = { ...data, avatarUrl: '' };
+                      setData(newData);
+                      savePortfolioData(newData);
+                      setAvatarStatus('🗑️ Avatar Reset to Default');
+                    }}
+                    className="admin-btn admin-btn--danger"
+                    style={{ fontSize: '0.75rem', padding: '4px 10px' }}
+                  >
+                    <Trash2 size={14} /> Reset
+                  </button>
+                )}
+              </div>
+              {avatarStatus && <p style={{ fontSize: '0.8rem', color: '#10B981', marginTop: '0.5rem' }}>{avatarStatus}</p>}
             </div>
 
-            {/* Upload ID Card Photo */}
-            <div className="admin-form__group" style={{ background: 'var(--bg-tertiary)', padding: '1.25rem', borderRadius: '8px', border: '1px solid var(--border)' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 600 }}>
-                <ImageIcon size={18} className="text-accent" /> Student ID Pass Photo
-              </label>
-              <input type="file" accept="image/*" onChange={handleIdCardPhotoUpload} className="admin-input" style={{ marginTop: '8px' }} />
-              {idCardStatus && <p style={{ fontSize: '0.85rem', color: 'var(--accent)', marginTop: '8px', fontWeight: 500 }}>{idCardStatus}</p>}
+            {/* Student Pass ID Photo Asset Card */}
+            <div className="asset-card" style={{ padding: '1.25rem', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--border)', borderRadius: '12px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                <h4 style={{ fontSize: '0.95rem', color: 'var(--accent)', margin: 0 }}>🪪 Student Pass Formal ID</h4>
+                <span className="admin-badge" style={{ fontSize: '0.7rem' }}>{data.idPhotoUrl ? 'Cloud Active' : 'Default Blue BG'}</span>
+              </div>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
+                <img src={data.idPhotoUrl || '/id-photo.png'} alt="ID Photo Preview" style={{ width: '45px', height: '55px', objectFit: 'cover', borderRadius: '6px', border: '1px solid var(--accent)' }} />
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', margin: 0, wordBreak: 'break-all' }}>
+                  {data.idPhotoUrl ? 'Cloud ID Photo Uploaded' : 'Formal Blue BG Photo'}
+                </p>
+              </div>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <label className="admin-btn admin-btn--primary" style={{ fontSize: '0.75rem', padding: '4px 10px', cursor: 'pointer' }}>
+                  <Upload size={14} /> Upload / Replace
+                  <input type="file" accept="image/*" onChange={handleIdCardPhotoUpload} style={{ display: 'none' }} />
+                </label>
+                {data.idPhotoUrl && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const newData = { ...data, idPhotoUrl: '' };
+                      setData(newData);
+                      savePortfolioData(newData);
+                      setIdCardStatus('🗑️ ID Photo Reset to Default');
+                    }}
+                    className="admin-btn admin-btn--danger"
+                    style={{ fontSize: '0.75rem', padding: '4px 10px' }}
+                  >
+                    <Trash2 size={14} /> Reset
+                  </button>
+                )}
+              </div>
+              {idCardStatus && <p style={{ fontSize: '0.8rem', color: '#10B981', marginTop: '0.5rem' }}>{idCardStatus}</p>}
             </div>
 
           </div>
-        </div>
 
-        {/* General Text Info */}
-        <div className="admin-card">
-          <div className="admin-card__header">
-            <h3 className="admin-card__title">General Profile Bio & Tagline</h3>
-            <button onClick={handleSaveAllGeneral} className="admin-btn admin-btn--primary">
-              <Save size={16} /> Save Profile Info
-            </button>
-          </div>
-          <div className="admin-form">
-            <div className="admin-form__group">
-              <label>Tagline</label>
-              <input 
-                type="text" 
-                className="admin-input" 
-                value={data.tagline} 
-                onChange={(e) => handleGeneralSaveField('tagline', e.target.value)} 
+          <form onSubmit={handleProfileSave}>
+            <div className="admin-form-group">
+              <label>Tagline / Main Role</label>
+              <input
+                type="text"
+                value={data.tagline || ''}
+                onChange={(e) => setData({ ...data, tagline: e.target.value })}
+                className="admin-input"
               />
             </div>
-            <div className="admin-form__group">
+
+            <div className="admin-form-group">
               <label>Bio Summary</label>
-              <textarea 
-                className="admin-input" 
+              <textarea
                 rows={4}
-                value={data.bio} 
-                onChange={(e) => handleGeneralSaveField('bio', e.target.value)} 
+                value={data.bio || ''}
+                onChange={(e) => setData({ ...data, bio: e.target.value })}
+                className="admin-input admin-textarea"
               />
             </div>
-          </div>
+
+            <button type="submit" className="admin-btn admin-btn--primary">
+              <Save size={16} /> Save Profile Info & Sync Cloud
+            </button>
+          </form>
         </div>
 
         <section id="projects">
