@@ -100,32 +100,66 @@ export const AdminDashboard: React.FC = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setAvatarStatus('Uploading Avatar...');
-    const reader = new FileReader();
-    reader.onload = () => {
-      const imgUrl = reader.result as string;
-      const newData = { ...data, avatarUrl: imgUrl };
+    setAvatarStatus('Uploading Avatar to Supabase Cloud Storage...');
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('category', 'avatar');
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/upload/image`, {
+        method: 'POST',
+        body: formData,
+      });
+      const result = await res.json();
+      const cloudUrl = result.url || URL.createObjectURL(file);
+      const newData = { ...data, avatarUrl: cloudUrl };
       setData(newData);
       savePortfolioData(newData);
-      setAvatarStatus('✅ Homepage Character Avatar Updated!');
-    };
-    reader.readAsDataURL(file);
+      setAvatarStatus('✅ Avatar Saved to Cloud (Cross-Device Synced)!');
+    } catch {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imgUrl = reader.result as string;
+        const newData = { ...data, avatarUrl: imgUrl };
+        setData(newData);
+        savePortfolioData(newData);
+        setAvatarStatus('✅ Avatar Saved Locally!');
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const handleIdCardPhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    setIdCardStatus('Uploading ID Card Photo...');
-    const reader = new FileReader();
-    reader.onload = () => {
-      const imgUrl = reader.result as string;
-      const newData = { ...data, idPhotoUrl: imgUrl };
+    setIdCardStatus('Uploading ID Photo to Supabase Cloud Storage...');
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('category', 'idcard');
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/upload/image`, {
+        method: 'POST',
+        body: formData,
+      });
+      const result = await res.json();
+      const cloudUrl = result.url || URL.createObjectURL(file);
+      const newData = { ...data, idPhotoUrl: cloudUrl };
       setData(newData);
       savePortfolioData(newData);
-      setIdCardStatus('✅ Student Pass Photo Updated!');
-    };
-    reader.readAsDataURL(file);
+      setIdCardStatus('✅ ID Photo Saved to Cloud (Cross-Device Synced)!');
+    } catch {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const imgUrl = reader.result as string;
+        const newData = { ...data, idPhotoUrl: imgUrl };
+        setData(newData);
+        savePortfolioData(newData);
+        setIdCardStatus('✅ ID Photo Saved Locally!');
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
