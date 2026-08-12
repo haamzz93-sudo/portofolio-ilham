@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { SectionHeading } from '../components/ui/SectionHeading';
-import { Bus, Navigation, Code2, Sparkles } from 'lucide-react';
 import './Hobbies.css';
 
 interface HobbyItem {
@@ -11,7 +10,6 @@ interface HobbyItem {
   slogan: string;
   description: string;
   image: string;
-  icon: React.ReactNode;
   tags: string[];
 }
 
@@ -20,35 +18,32 @@ export const Hobbies: React.FC = () => {
     {
       id: 'bus',
       title: 'Penikmat Perjalanan Malam',
-      category: 'Bus & Road Enthusiast',
-      slogan: 'Ketenangan di Balik Kaca Malam · Sensasi Lintas Jawa Bersama Sumber Group',
+      category: 'Night Travel & Bus Enthusiast',
+      slogan: 'Menikmati Keheningan Jalanan Malam & Deru Mesin Lintas Jawa',
       description:
-        'Penikmat estetika perjalanan bus malam antarkota (khususnya armada Sumber Group / Sugeng Rahayu rute Surabaya-Madiun-Solo-Yogya). Menikmati kedamaian deru mesin malam, hembusan angin jalanan, dan dinamika ritme jalur malam Jawa.',
+        'Saya penikmat perjalanan bus malam antarkota, khususnya armada Sumber Group & Sugeng Rahayu rute Surabaya - Madiun - Solo - Yogya. Ada ketenangan tersendiri saat melihat gemerlap lampu jalanan dan merasakan ritme perjalanan di balik kaca bus saat malam hari.',
       image: '/bus-hobby.jpg',
-      icon: <Bus size={22} className="hobby-card__icon" />,
-      tags: ['Sumber Group', 'Night Cruiser', 'Road Journey', 'Sugeng Rahayu'],
+      tags: ['Sumber Group', 'Sugeng Rahayu', 'Night Travel', 'Lintas Jawa'],
     },
     {
       id: 'touring',
       title: 'Touring & Nature Exploration',
-      category: 'Motorcycle & Outdoor Explorer',
-      slogan: 'Menjelajah Alam Bebas di Atas Roda Dua · Menyusuri Pesisir & Perbukitan',
+      category: 'Motorcycle Touring',
+      slogan: 'Menjelajah Alam Bebas di Atas Roda Dua',
       description:
-        'Hobi menjelajahi keindahan alam Nusantara menggunakan sepeda motor. Menyusuri jalur pesisir pantai, tebing laut, dan perbukitan tinggi memberikan kebebasan batin, pandangan luas, serta ide-ide kreatif baru.',
+        'Suka touring naik motor buat eksplorasi tempat-tempat alam yang indah, mulai dari tebing pantai sampai daerah perbukitan. Buat saya, berkendara menyusuri jalanan luas itu cara terbaik buat menyegarkan pikiran dan cari inspirasi baru.',
       image: '/touring-hobby.jpg',
-      icon: <Navigation size={22} className="hobby-card__icon" />,
-      tags: ['Motor Touring', 'Nature Explorer', 'Freedom Ride', 'Coast Scenery'],
+      tags: ['Motor Touring', 'Exploring Nature', 'Freedom Ride', 'Vario Rider'],
     },
     {
       id: 'coding',
       title: 'Software Crafting & AI Tinkering',
-      category: 'Tech & Development Passion',
-      slogan: 'Menerjemahkan Logika & Ide Kreatif Menjadi Aplikasi Digital Berkelanjutan',
+      category: 'Software & IoT Development',
+      slogan: 'Mengubah Ide & Logika Menjadi Solusi Digital',
       description:
-        'Menekuni dunia koding, perancangan web & mobile apps, arsitektur backend FastAPI, hingga otomasi hardware IoT ESP32. Menyukai tantangan pemecahan masalah kompleks dan integrasi AI terbaru.',
+        'Dunia koding dan eksperimen teknologi adalah ruang bermain favorit saya. Dari membangun aplikasi web & mobile, merancang backend API, sampai mengutak-atik sensor hardware IoT ESP32 untuk memecahkan masalah nyata.',
       image: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80',
-      icon: <Code2 size={22} className="hobby-card__icon" />,
-      tags: ['Full-Stack Dev', 'IoT ESP32', 'AI Integration', 'Problem Solver'],
+      tags: ['Full-Stack Dev', 'IoT ESP32', 'Python & React', 'Problem Solving'],
     },
   ];
 
@@ -57,7 +52,7 @@ export const Hobbies: React.FC = () => {
       <div className="container">
         <SectionHeading
           title="Beyond The Code"
-          subtitle="Hobi, Minat & Aktivitas di Luar Layar Monitor"
+          subtitle="Aktivitas, Minat & Hobi di Luar Koding"
         />
 
         <div className="hobbies-grid">
@@ -65,17 +60,16 @@ export const Hobbies: React.FC = () => {
             <motion.div
               key={item.id}
               className="hobby-card"
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 25 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{ duration: 0.5, delay: index * 0.15 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.4, delay: index * 0.12 }}
             >
               {/* Card Image Banner */}
               <div className="hobby-card__image-container">
                 <img src={item.image} alt={item.title} className="hobby-card__img" />
                 <div className="hobby-card__overlay" />
                 <div className="hobby-card__category-badge">
-                  {item.icon}
                   <span>{item.category}</span>
                 </div>
               </div>
@@ -84,11 +78,8 @@ export const Hobbies: React.FC = () => {
               <div className="hobby-card__body">
                 <h3 className="hobby-card__title">{item.title}</h3>
                 
-                {/* Slogan Quote */}
-                <div className="hobby-card__slogan">
-                  <Sparkles size={14} className="hobby-card__slogan-spark" />
-                  <span>"{item.slogan}"</span>
-                </div>
+                {/* Clean Slogan Quote */}
+                <p className="hobby-card__slogan">"{item.slogan}"</p>
 
                 <p className="hobby-card__desc">{item.description}</p>
 
