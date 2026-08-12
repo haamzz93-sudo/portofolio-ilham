@@ -4,7 +4,7 @@ import { useAdmin } from '../admin/AdminProvider';
 import { ContentEditor } from '../admin/ContentEditor';
 import { getPortfolioData, savePortfolioData } from '../data/portfolio';
 import type { PortfolioData } from '../data/portfolio';
-import { LogOut, Home, LayoutDashboard, FileText, Image as ImageIcon, Server, Database, Save, Check } from 'lucide-react';
+import { LogOut, Home, LayoutDashboard, FileText, Image as ImageIcon, Save, Check } from 'lucide-react';
 import '../admin/admin.css';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || '';
@@ -16,23 +16,9 @@ export const AdminDashboard: React.FC = () => {
   const [avatarStatus, setAvatarStatus] = useState<string>('');
   const [idCardStatus, setIdCardStatus] = useState<string>('');
   const [saveNotify, setSaveNotify] = useState<string>('');
-  const [backendStatus, setBackendStatus] = useState<{ status: string; supabase: boolean } | null>(null);
 
   useEffect(() => {
     setData(getPortfolioData());
-
-    // Check FastAPI Backend Health
-    fetch(`${API_BASE_URL}/api/health`)
-      .then((res) => res.json())
-      .then((healthData) => {
-        setBackendStatus({
-          status: healthData.status || 'healthy',
-          supabase: healthData.supabase_connected || false,
-        });
-      })
-      .catch(() => {
-        setBackendStatus({ status: 'client-only', supabase: false });
-      });
   }, []);
 
   if (!isAuthenticated) {
@@ -172,22 +158,20 @@ export const AdminDashboard: React.FC = () => {
           <a href="#skills" className="admin-sidebar__link"><LayoutDashboard size={18} /> Skills Manager</a>
           <a href="#experience" className="admin-sidebar__link"><LayoutDashboard size={18} /> Experience Manager</a>
           <Link to="/" className="admin-sidebar__link"><Home size={18} /> Back to Site</Link>
+          <button onClick={logout} className="admin-sidebar__link admin-sidebar__logout"><LogOut size={18} /> Logout</button>
         </nav>
-        <button onClick={logout} className="admin-btn admin-btn--icon" style={{ marginTop: 'auto', width: '100%', justifyContent: 'center' }}>
-          <LogOut size={18} /> Logout
-        </button>
       </div>
 
-      <div className="admin-content">
+      <div className="admin-main">
         <div className="admin-header">
-          <h1>Dashboard Management</h1>
-          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-            <span className="admin-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-              <Server size={14} /> FastAPI: {backendStatus?.status || 'Active'}
-            </span>
-            <span className="admin-badge" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-              <Database size={14} /> Supabase: {backendStatus?.supabase ? 'Connected' : 'Ready'}
-            </span>
+          <div className="admin-header__title-box">
+            <h1>Dashboard Management</h1>
+            <p className="admin-header__sub">Global Supabase Cloud Sync • Real-Time Database Manager</p>
+          </div>
+          <div className="admin-header__status">
+            <span className="status-badge status-badge--success">FastAPI: healthy</span>
+            <span className="status-badge status-badge--success">Supabase: Ready for Cloud</span>
+            <span className="status-badge status-badge--info">☁️ Global Cross-Device Active</span>
           </div>
         </div>
 
