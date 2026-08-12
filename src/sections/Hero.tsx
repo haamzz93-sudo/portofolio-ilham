@@ -25,16 +25,22 @@ const itemVariants = {
 };
 
 import { useState, useEffect } from 'react';
-import { getPortfolioData } from '../data/portfolio';
+import { getPortfolioData, fetchPortfolioData } from '../data/portfolio';
 import type { PortfolioData } from '../data/portfolio';
 
-// Inside Hero component:
 export const Hero = () => {
   const { t } = useLanguage();
   const [data, setData] = useState<PortfolioData>(getPortfolioData());
 
   useEffect(() => {
-    setData(getPortfolioData());
+    const updateData = async () => {
+      const latest = await fetchPortfolioData();
+      setData(latest);
+    };
+    updateData();
+
+    window.addEventListener('portfolio_data_updated', updateData);
+    return () => window.removeEventListener('portfolio_data_updated', updateData);
   }, []);
 
   const scrollTo = (id: string) => {

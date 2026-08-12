@@ -184,10 +184,14 @@ export async function fetchPortfolioData(): Promise<PortfolioData> {
 export function savePortfolioData(data: PortfolioData): void {
   try {
     localStorage.setItem('portfolio_data', JSON.stringify(data));
+    window.dispatchEvent(new Event('portfolio_data_updated'));
+
     fetch(`${API_BASE_URL}/api/portfolio`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
+    }).then(() => {
+      window.dispatchEvent(new Event('portfolio_data_updated'));
     }).catch((err) => console.error('Cloud save failed:', err));
   } catch (e) {
     console.error('Error saving portfolio data:', e);

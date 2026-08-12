@@ -4,7 +4,7 @@ import { Download, MapPin, GraduationCap } from 'lucide-react';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { IdCard3D } from '../components/ui/IdCard3D';
 import { useLanguage } from '../context/LanguageContext';
-import { getPortfolioData } from '../data/portfolio';
+import { getPortfolioData, fetchPortfolioData } from '../data/portfolio';
 import type { PortfolioData } from '../data/portfolio';
 import './About.css';
 
@@ -13,7 +13,14 @@ export const About = () => {
   const [data, setData] = useState<PortfolioData>(getPortfolioData());
 
   useEffect(() => {
-    setData(getPortfolioData());
+    const updateData = async () => {
+      const latest = await fetchPortfolioData();
+      setData(latest);
+    };
+    updateData();
+
+    window.addEventListener('portfolio_data_updated', updateData);
+    return () => window.removeEventListener('portfolio_data_updated', updateData);
   }, []);
 
   return (
