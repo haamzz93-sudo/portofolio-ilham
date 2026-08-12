@@ -1,0 +1,332 @@
+/* ── 3D Interactive ID Card Styles ── */
+
+.id-card-3d-scene {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  margin-inline: auto;
+  padding-top: 3.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+}
+
+/* Lanyard Ribbon & Clip Assembly */
+.id-card-lanyard-assembly {
+  position: absolute;
+  top: -220px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+}
+
+/* Fabric Lanyard Ribbon */
+.id-card-ribbon {
+  width: 22px;
+  height: 280px;
+  background: linear-gradient(90deg, #0F172A 0%, var(--accent) 50%, #0F172A 100%);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  border-inline: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+/* Metallic Ring Connector */
+.id-card-clip-ring {
+  width: 14px;
+  height: 14px;
+  border: 2.5px solid #94A3B8;
+  border-radius: 50%;
+  margin-top: -3px;
+  background: #334155;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Metallic Clip Hook */
+.id-card-clip {
+  width: 26px;
+  height: 24px;
+  background: linear-gradient(180deg, #CBD5E1 0%, #64748B 60%, #334155 100%);
+  border: 1px solid #94A3B8;
+  border-radius: 4px 4px 8px 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  margin-top: -4px;
+}
+
+/* 3D Wrapper & Transition (Relaxed 1.2s flip animation) */
+.id-card-3d-wrapper {
+  position: relative;
+  width: 300px;
+  height: 440px;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 1.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.id-card-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-xl);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 30px var(--accent-dim);
+  overflow: hidden;
+  background: var(--bg-glass);
+}
+
+.id-card-front {
+  z-index: 2;
+}
+
+.id-card-back {
+  transform: rotateY(180deg);
+  background: var(--bg-secondary);
+}
+
+/* Hologram shine strip */
+.id-card-hologram-strip {
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(
+    135deg,
+    transparent 40%,
+    rgba(77, 168, 218, 0.15) 45%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 55%
+  );
+  pointer-events: none;
+}
+
+/* Lanyard slot hole */
+.id-card-slot {
+  width: 44px;
+  height: 10px;
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-light);
+  border-radius: var(--radius-full);
+  margin: 0 auto 0.75rem auto;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Card Header */
+.id-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.id-card-logo {
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 0.9rem;
+  background: var(--accent);
+  color: #0F172A;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+}
+
+.id-card-header-text h5 {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+
+.id-card-header-text span {
+  font-size: 0.65rem;
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+/* Photo Box */
+.id-card-photo-box {
+  position: relative;
+  width: 135px;
+  height: 160px;
+  margin: 0 auto 0.75rem auto;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 2px solid var(--accent);
+  box-shadow: 0 8px 20px var(--accent-dim);
+}
+
+.id-card-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Details Section */
+.id-card-details {
+  text-align: center;
+}
+
+.id-card-name {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  margin-bottom: 2px;
+}
+
+.id-card-role {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+
+.id-card-meta {
+  display: flex;
+  justify-content: space-around;
+  background: var(--bg-tertiary);
+  padding: 6px var(--space-xs);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.meta-label {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.meta-value {
+  font-size: 0.7rem;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* Footer Barcode */
+.id-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.barcode-text {
+  font-family: monospace;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+}
+
+.id-card-flip-hint {
+  font-size: 0.65rem;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 600;
+}
+
+/* Back Face Styles */
+.id-card-magnetic-stripe {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  background: #111827;
+  border-block: 1px solid #374151;
+}
+
+.id-card-back-header {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.id-card-back-body {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-block: 0.75rem;
+}
+
+.id-card-qr-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #FFFFFF;
+  padding: 6px;
+  border-radius: var(--radius-md);
+  color: #0F172A;
+}
+
+.id-card-qr {
+  color: #0F172A;
+}
+
+.qr-sub {
+  font-size: 0.5rem;
+  font-weight: 800;
+  margin-top: 2px;
+}
+
+.id-card-contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contact-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+}
+
+.id-card-signature-area {
+  background: var(--bg-tertiary);
+  padding: 8px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  text-align: center;
+}
+
+.signature-line {
+  border-bottom: 1px dashed var(--border-light);
+  padding-bottom: 2px;
+  margin-bottom: 2px;
+}
+
+.signature-font {
+  font-family: 'Brush Script MT', cursive, sans-serif;
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+.signature-label {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}

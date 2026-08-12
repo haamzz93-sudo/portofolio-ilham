@@ -1,0 +1,67 @@
+/* ── GPU-Accelerated Custom Cursor Styles ── */
+
+.custom-cursor-dot {
+  position: fixed;
+  top: -4px;
+  left: -4px;
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent-glow);
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+  will-change: transform;
+}
+
+.custom-cursor-dot.hovered {
+  background-color: #ffffff;
+  box-shadow: 0 0 15px #ffffff, 0 0 30px var(--accent);
+}
+
+.custom-cursor-ring {
+  position: fixed;
+  top: -20px;
+  left: -20px;
+  width: 40px;
+  height: 40px;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.6;
+  box-shadow: 0 0 20px var(--accent-dim);
+  transition: opacity var(--transition-fast), border-color var(--transition-fast), background-color var(--transition-fast);
+  will-change: transform;
+}
+
+.custom-cursor-ring.hovered {
+  border-color: var(--accent-hover);
+  background-color: var(--accent-dim);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0.9;
+  box-shadow: 0 0 30px var(--accent-glow), 0 0 50px var(--accent-dim);
+}
+
+/* Hide default cursor on desktop when custom cursor is active */
+@media (hover: hover) and (pointer: fine) {
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [role="button"] {
+    cursor: default;
+  }
+}
+
+/* Disable on reduced motion preference or touch devices */
+@media (prefers-reduced-motion: reduce), (pointer: coarse) {
+  .custom-cursor-dot,
+  .custom-cursor-ring {
+    display: none !important;
+  }
+}
