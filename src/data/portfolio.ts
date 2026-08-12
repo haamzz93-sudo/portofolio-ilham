@@ -77,8 +77,8 @@ const DEFAULT_DATA: PortfolioData = {
     { id: 's6', name: 'HTML & CSS', category: 'frontend', level: 92, icon: 'https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg' },
     // Backend
     { id: 's7', name: 'Python / Flask', category: 'backend', level: 82, icon: 'https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg' },
-    { id: 's8', name: 'Advanced SQL', category: 'backend', level: 85, icon: 'https://upload.wikimedia.org/wikipedia/labs/8/8e/MySQL_logo.svg' },
-    { id: 's9', name: 'MySQL', category: 'backend', level: 88, icon: 'https://upload.wikimedia.org/wikipedia/labs/8/8e/MySQL_logo.svg' },
+    { id: 's8', name: 'Advanced SQL', category: 'backend', level: 85, icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/postgresql/postgresql-original.svg' },
+    { id: 's9', name: 'MySQL', category: 'backend', level: 88, icon: 'https://raw.githubusercontent.com/devicons/devicon/master/icons/mysql/mysql-original.svg' },
     { id: 's10', name: 'LLM / AI Dev', category: 'backend', level: 75, icon: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg' },
     { id: 's11', name: 'OOP', category: 'backend', level: 82, icon: 'https://upload.wikimedia.org/wikipedia/en/3/30/Java_programming_language_logo.svg' },
     // Tools
@@ -142,6 +142,15 @@ export function getPortfolioData(): PortfolioData {
       const cleanAvatarUrl = parsed.avatarUrl && !parsed.avatarUrl.startsWith('blob:') ? parsed.avatarUrl : DEFAULT_DATA.avatarUrl;
       const cleanIdPhotoUrl = parsed.idPhotoUrl && !parsed.idPhotoUrl.startsWith('blob:') ? parsed.idPhotoUrl : DEFAULT_DATA.idPhotoUrl;
 
+      // Clean up skills icons to replace broken wikimedia labs URLs
+      const cleanedSkills = (parsed.skills?.length ? parsed.skills : DEFAULT_DATA.skills).map((s: Skill) => {
+        if (!s.icon || s.icon.includes('labs/8/8e/MySQL_logo.svg')) {
+          const match = DEFAULT_DATA.skills.find(ds => ds.id === s.id || ds.name === s.name);
+          return { ...s, icon: match ? match.icon : s.icon };
+        }
+        return s;
+      });
+
       return {
         ...DEFAULT_DATA,
         ...parsed,
@@ -149,7 +158,7 @@ export function getPortfolioData(): PortfolioData {
         avatarUrl: cleanAvatarUrl,
         idPhotoUrl: cleanIdPhotoUrl,
         projects: parsed.projects?.length ? parsed.projects : DEFAULT_DATA.projects,
-        skills: parsed.skills?.length ? parsed.skills : DEFAULT_DATA.skills,
+        skills: cleanedSkills,
         experiences: parsed.experiences?.length ? parsed.experiences : DEFAULT_DATA.experiences,
       };
     }

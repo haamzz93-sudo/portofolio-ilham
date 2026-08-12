@@ -65,7 +65,14 @@ export const Skills = () => {
             {marqueeItems.map((skill, index) => (
               <div key={`${skill.id}-${index}`} className="skills-marquee__item">
                 {skill.icon && (
-                  <img src={skill.icon} alt={skill.name} className="skills-marquee__icon" />
+                  <img
+                    src={skill.icon}
+                    alt={skill.name}
+                    className="skills-marquee__icon"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                    }}
+                  />
                 )}
                 <span className="skills-marquee__name">{skill.name}</span>
               </div>
