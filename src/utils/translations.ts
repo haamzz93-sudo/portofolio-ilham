@@ -29,7 +29,7 @@ export const translations = {
     about: {
       title: 'About Me',
       subtitle: 'A brief introduction',
-      bio: "I'm Ilham Eka Saputra — a 5th semester D3 Informatics Engineering student at Universitas Sebelas Maret (UNS) Madiun, specializing in Full-Stack Web & Mobile Development and IoT integration. I've built innovative projects like GiziLens (AI-powered stunting screening platform) and an LLM-based Clinical Decision Support System. I hold certifications from IBM, Google, Meta, and CalArts, and actively compete in national technology competitions.",
+      bio: "I'm Ilham Eka Saputra — a 5th semester D3 Informatics Engineering student at Universitas Sebelas Maret (UNS) Madiun with a GPA of 3.68, specializing in Full-Stack Web & Mobile Development and IoT integration. I have built 3+ featured real-world projects like GiziLens (AI stunting detection) and an LLM-based Clinical Decision Support System.",
       location: 'Madiun, Jawa Timur, Indonesia',
       university: 'Universitas Sebelas Maret (UNS) Kampus Madiun · D3 Informatics Engineering',
       downloadCv: 'Download CV',
@@ -119,7 +119,7 @@ export const translations = {
     about: {
       title: 'Tentang Saya',
       subtitle: 'Pengenalan singkat',
-      bio: 'Saya Ilham Eka Saputra — mahasiswa semester 5 D3 Teknik Informatika Universitas Sebelas Maret (UNS) Madiun, dengan spesialisasi Full-Stack Web & Mobile Development dan integrasi IoT. Saya telah membangun proyek-proyek inovatif seperti GiziLens (platform screening stunting berbasis AI) dan Sistem Pendukung Keputusan Klinis berbasis LLM. Saya memiliki sertifikasi dari IBM, Google, Meta, dan CalArts, serta aktif berkompetisi di ajang teknologi nasional.',
+      bio: 'Saya Ilham Eka Saputra — mahasiswa semester 5 D3 Teknik Informatika Universitas Sebelas Maret (UNS) Madiun dengan IPK 3.68, dengan spesialisasi Full-Stack Web & Mobile Development dan integrasi IoT. Saya telah membangun 3+ proyek unggulan seperti GiziLens (platform screening stunting berbasis AI) dan Sistem Pendukung Keputusan Klinis berbasis LLM.',
       location: 'Madiun, Jawa Timur, Indonesia',
       university: 'Universitas Sebelas Maret (UNS) Kampus Madiun · D3 Teknik Informatika',
       downloadCv: 'Unduh CV',
