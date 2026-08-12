@@ -97,22 +97,26 @@ export const AdminDashboard: React.FC = () => {
         body: formData,
       });
       const result = await res.json();
-      const cloudUrl = result.url || URL.createObjectURL(file);
-      const newData = { ...data, avatarUrl: cloudUrl };
-      setData(newData);
-      savePortfolioData(newData);
-      setAvatarStatus('✅ Avatar Saved to Cloud (Cross-Device Synced)!');
-    } catch {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const imgUrl = reader.result as string;
-        const newData = { ...data, avatarUrl: imgUrl };
+      if (result.url) {
+        const newData = { ...data, avatarUrl: result.url };
         setData(newData);
         savePortfolioData(newData);
-        setAvatarStatus('✅ Avatar Saved Locally!');
-      };
-      reader.readAsDataURL(file);
+        setAvatarStatus('✅ Avatar Saved to Cloud (Cross-Device Synced)!');
+        return;
+      }
+    } catch {
+      // Fallback to base64 if network offline
     }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const imgUrl = reader.result as string;
+      const newData = { ...data, avatarUrl: imgUrl };
+      setData(newData);
+      savePortfolioData(newData);
+      setAvatarStatus('✅ Avatar Saved!');
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleIdCardPhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -130,22 +134,26 @@ export const AdminDashboard: React.FC = () => {
         body: formData,
       });
       const result = await res.json();
-      const cloudUrl = result.url || URL.createObjectURL(file);
-      const newData = { ...data, idPhotoUrl: cloudUrl };
-      setData(newData);
-      savePortfolioData(newData);
-      setIdCardStatus('✅ ID Photo Saved to Cloud (Cross-Device Synced)!');
-    } catch {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const imgUrl = reader.result as string;
-        const newData = { ...data, idPhotoUrl: imgUrl };
+      if (result.url) {
+        const newData = { ...data, idPhotoUrl: result.url };
         setData(newData);
         savePortfolioData(newData);
-        setIdCardStatus('✅ ID Photo Saved Locally!');
-      };
-      reader.readAsDataURL(file);
+        setIdCardStatus('✅ ID Photo Saved to Cloud (Cross-Device Synced)!');
+        return;
+      }
+    } catch {
+      // Fallback to base64 if network offline
     }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      const imgUrl = reader.result as string;
+      const newData = { ...data, idPhotoUrl: imgUrl };
+      setData(newData);
+      savePortfolioData(newData);
+      setIdCardStatus('✅ ID Photo Saved!');
+    };
+    reader.readAsDataURL(file);
   };
 
   return (

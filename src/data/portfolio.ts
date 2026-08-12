@@ -165,9 +165,18 @@ export async function fetchPortfolioData(): Promise<PortfolioData> {
     if (res.ok) {
       const cloudData = await res.json();
       const config = cloudData.config || cloudData;
+
+      // Sanitize temporary blob URLs that cause ERR_FILE_NOT_FOUND on external devices
+      const cleanCvUrl = config.cvUrl && !config.cvUrl.startsWith('blob:') ? config.cvUrl : DEFAULT_DATA.cvUrl;
+      const cleanAvatarUrl = config.avatarUrl && !config.avatarUrl.startsWith('blob:') ? config.avatarUrl : DEFAULT_DATA.avatarUrl;
+      const cleanIdPhotoUrl = config.idPhotoUrl && !config.idPhotoUrl.startsWith('blob:') ? config.idPhotoUrl : DEFAULT_DATA.idPhotoUrl;
+
       const merged: PortfolioData = {
         ...DEFAULT_DATA,
         ...config,
+        cvUrl: cleanCvUrl,
+        avatarUrl: cleanAvatarUrl,
+        idPhotoUrl: cleanIdPhotoUrl,
         projects: cloudData.projects?.length ? cloudData.projects : (config.projects?.length ? config.projects : DEFAULT_DATA.projects),
         skills: cloudData.skills?.length ? cloudData.skills : (config.skills?.length ? config.skills : DEFAULT_DATA.skills),
         experiences: cloudData.experiences?.length ? cloudData.experiences : (config.experiences?.length ? config.experiences : DEFAULT_DATA.experiences),
