@@ -50,9 +50,13 @@
    - **Featured Projects**: Galeri proyek nyata dilengkapi filter kategori (Web, Mobile, Other), link *Live Demo* (misal: [leximedai.web.id](https://www.leximedai.web.id/)), dan *Source Code*.
    - **Experience Timeline**: Linimasa pengalaman kerja & riset dengan efek *Cyber-Glassmorphism* dan *pulsing neon dot*.
    - **Contact & Map Footer**: Formulir pesan interaktif, tautan sosial media, kontak WhatsApp, dan widget Google Maps lokasi kampus UNS Madiun.
+   - **🏍️ Beyond The Code (Hobbies & Passions Section)**
+     - **🚍 Penikmat Perjalanan Malam (Bus Enthusiast)**: Apresiasi pada jalur malam Jawa (armada *Sumber Group / Sugeng Rahayu* Surabaya-Madiun-Solo-Yogya). *"Ketenangan di Balik Kaca Malam · Sensasi Lintas Jawa"*.
+     - **🏍️ Riding & Nature Exploration (Motor Touring)**: Hobi eksplorasi alam pesisir pantai & perbukitan menggunakan motor Honda Vario. *"Menjelajah Alam Bebas di Atas Roda Dua"*.
+     - **💻 Software Crafting & Tech Tinkering (Coding)**: Passion merancang web, mobile apps, backend FastAPI, dan integrasi IoT mikrokontroler.
 
 6. **🔒 Hidden Admin Panel**
-   - Panel manajemen konten tersembunyi yang diakses melalui easter-egg di Footer (klik copyright 5x) dengan otentikasi login aman.
+   - Panel manajemen konten tersembunyi yang diakses melalui easter-egg di Footer (klik copyright 5x) dengan otentikasi login aman & Cloud Supabase database sync.
 
 ---
 
