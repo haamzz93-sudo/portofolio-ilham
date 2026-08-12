@@ -134,9 +134,18 @@ export function getPortfolioData(): PortfolioData {
     const saved = localStorage.getItem('portfolio_data');
     if (saved) {
       const parsed = JSON.parse(saved);
+      
+      // Clean up temporary blob URLs that cause 404 errors on page refresh
+      const cleanCvUrl = parsed.cvUrl && !parsed.cvUrl.startsWith('blob:') ? parsed.cvUrl : DEFAULT_DATA.cvUrl;
+      const cleanAvatarUrl = parsed.avatarUrl && !parsed.avatarUrl.startsWith('blob:') ? parsed.avatarUrl : DEFAULT_DATA.avatarUrl;
+      const cleanIdPhotoUrl = parsed.idPhotoUrl && !parsed.idPhotoUrl.startsWith('blob:') ? parsed.idPhotoUrl : DEFAULT_DATA.idPhotoUrl;
+
       return {
         ...DEFAULT_DATA,
         ...parsed,
+        cvUrl: cleanCvUrl,
+        avatarUrl: cleanAvatarUrl,
+        idPhotoUrl: cleanIdPhotoUrl,
         projects: parsed.projects?.length ? parsed.projects : DEFAULT_DATA.projects,
         skills: parsed.skills?.length ? parsed.skills : DEFAULT_DATA.skills,
         experiences: parsed.experiences?.length ? parsed.experiences : DEFAULT_DATA.experiences,
