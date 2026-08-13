@@ -12,6 +12,8 @@ export const IdCard3D: React.FC<IdCard3DProps> = ({
   const [isFlipped, setIsFlipped] = useState(false);
   const [rotate, setRotate] = useState({ x: 0, y: 0 });
 
+  const finalImageSrc = imageSrc && !imageSrc.startsWith('blob:') ? imageSrc : '/id-photo.png';
+
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const card = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - card.left - card.width / 2;
@@ -68,7 +70,7 @@ export const IdCard3D: React.FC<IdCard3DProps> = ({
 
           {/* Photo Frame */}
           <div className="id-card-photo-box">
-            <img src={imageSrc} alt="Ilham Eka Saputra" className="id-card-photo" />
+            <img src={finalImageSrc} alt="Ilham Eka Saputra" className="id-card-photo" />
           </div>
 
           {/* User Details */}

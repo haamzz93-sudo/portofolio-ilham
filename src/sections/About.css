@@ -93,15 +93,55 @@
 @media (max-width: 768px) {
   .about__grid {
     grid-template-columns: 1fr;
-    gap: var(--space-xl);
+    gap: 2.5rem;
+    justify-items: center;
+    text-align: center;
   }
 
-  .about__photo {
-    max-width: 280px;
+  .about__photo-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .about__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
+  }
+
+  .about__bio {
+    text-align: center;
+    font-size: 0.98rem;
+    line-height: 1.7;
+    margin: 0 auto;
+  }
+
+  .about__info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .about__info-item {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .about__stats-row {
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  .about__content .btn {
+    align-self: center;
     margin-inline: auto;
-  }
-
-  .about__stats {
-    grid-template-columns: 1fr;
   }
 }
