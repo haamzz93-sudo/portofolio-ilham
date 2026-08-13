@@ -23,20 +23,13 @@ export const AnimatedBorderButton = React.forwardRef<
       borderWidth = 20,
       duration = 4,
       glowColor = "via-[#4DA8DA] to-[#0284C7]",
+      asChild,
       ...props
     },
     ref
   ) => {
     return (
-      <Button
-        ref={ref}
-        variant={variant}
-        className={cn(
-          "relative overflow-hidden border border-cyan-500/30 bg-slate-950/60 text-white backdrop-blur-md transition-all hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(77,168,218,0.3)]",
-          className
-        )}
-        {...props}
-      >
+      <div className="relative inline-flex items-center justify-center overflow-hidden rounded-md p-[1px]">
         <div
           className={cn(
             "-inset-px pointer-events-none absolute rounded-[inherit] border-2 border-transparent border-inset [mask-clip:padding-box,border-box]",
@@ -62,8 +55,19 @@ export const AnimatedBorderButton = React.forwardRef<
             }}
           />
         </div>
-        {children}
-      </Button>
+        <Button
+          ref={ref}
+          variant={variant}
+          asChild={asChild}
+          className={cn(
+            "relative z-10 border border-cyan-500/30 bg-slate-950/60 text-white backdrop-blur-md transition-all hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(77,168,218,0.3)]",
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </Button>
+      </div>
     );
   }
 );
