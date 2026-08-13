@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { Download, MapPin, GraduationCap } from 'lucide-react';
 import { SectionHeading } from '../components/ui/SectionHeading';
 import { IdCard3D } from '../components/ui/IdCard3D';
+import { AnimatedBorderButton } from '../components/ui/button-border';
 import { useLanguage } from '../context/LanguageContext';
 import { getPortfolioData, fetchPortfolioData } from '../data/portfolio';
 import type { PortfolioData } from '../data/portfolio';
@@ -73,16 +74,21 @@ export const About = () => {
               </div>
             </div>
 
-            <a
-              href={data.cvUrl || '/CV_Ilham_Eka_Saputra_V3924005.pdf'}
-              target="_blank"
-              rel="noopener noreferrer"
-              download="CV_Ilham_Eka_Saputra_V3924005.pdf"
-              className="btn btn--glass"
+            <AnimatedBorderButton
+              asChild
+              className="px-6 py-3 font-semibold text-base"
             >
-              <Download size={18} />
-              {t.about.downloadCv}
-            </a>
+              <a
+                href={data.cvUrl || '/CV_Ilham_Eka_Saputra_V3924005.pdf'}
+                target="_blank"
+                rel="noopener noreferrer"
+                download="CV_Ilham_Eka_Saputra_V3924005.pdf"
+                className="inline-flex items-center gap-2"
+              >
+                <Download size={18} />
+                {t.about.downloadCv}
+              </a>
+            </AnimatedBorderButton>
           </motion.div>
         </div>
       </div>

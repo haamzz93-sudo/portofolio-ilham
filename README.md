@@ -55,14 +55,18 @@
      - **🏍️ Riding & Nature Exploration (Motor Touring)**: Hobi eksplorasi alam pesisir pantai & perbukitan menggunakan motor Honda Vario. *"Menjelajah Alam Bebas di Atas Roda Dua"*.
      - **💻 Software Crafting & Tech Tinkering (Coding)**: Passion merancang web, mobile apps, backend FastAPI, dan integrasi IoT mikrokontroler.
 
-6. **🔒 Hidden Admin Panel**
+6. **✨ Animated Cyber Border Buttons (Shadcn UI + Motion)**
+   - Komponen tombol interaktif berbasis Shadcn UI `Button` & Framer Motion `motion.div`.
+   - Mengusung efek animasi lis border berjalan (*continuous glowing border path*) berwarna cyan-blue khas tema neon `IES` (`via-[#4DA8DA] to-[#0284C7]`).
+
+7. **🔒 Hidden Admin Panel**
    - Panel manajemen konten tersembunyi yang diakses melalui easter-egg di Footer (klik copyright 5x) dengan otentikasi login aman & Cloud Supabase database sync.
 
 ---
 
 ## 🛠️ Teknologi & Tools yang Digunakan
 
-- **Core**: React 18, TypeScript, Vite
+- **Core**: React 18, TypeScript, Vite, Shadcn UI (`@radix-ui/react-slot`, `cva`, `clsx`, `tailwind-merge`)
 - **Styling**: Vanilla CSS, Tailwind CSS (Utilities), Glassmorphism, CSS Custom Properties
 - **Animation**: Framer Motion, CSS Keyframes
 - **Icons**: Lucide React, Wikipedia / Wikimedia Direct SVG Logos
