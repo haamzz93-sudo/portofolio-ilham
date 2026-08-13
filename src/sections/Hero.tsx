@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { ChevronDown, Mail, ExternalLink, Code2 } from 'lucide-react';
 import { FloatingPathsBackground } from '../components/ui/floating-paths';
 import { InteractiveHoverButton } from '../components/ui/interactive-hover-button';
-import { AnimatedBorderButton } from '../components/ui/button-border';
+import { LiquidButton } from '../components/ui/liquid-glass-button';
 import { SOCIAL_LINKS } from '../utils/constants';
 import { useLanguage } from '../context/LanguageContext';
 import './Hero.css';
@@ -77,9 +77,9 @@ export const Hero = () => {
               text={t.hero.viewWork}
               onClick={() => scrollTo('projects')}
             />
-            <AnimatedBorderButton onClick={() => scrollTo('contact')} className="px-6 py-3 font-semibold">
+            <LiquidButton onClick={() => scrollTo('contact')}>
               {t.hero.getInTouch}
-            </AnimatedBorderButton>
+            </LiquidButton>
           </div>
         </motion.div>
 
